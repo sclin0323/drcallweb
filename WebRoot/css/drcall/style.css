@@ -1,0 +1,205 @@
+/*
+Theme Name: Skybox - Responsive Multipurpose HTML Template
+Theme URI: http://themes.iki-bir.com/skybox/box
+Author: elemis
+Author URI: http://iki-bir.com
+Version: 1.1
+*/
+@charset "utf-8";
+
+/*-----------------------------------------------------------------------------------*/
+/*	RESET
+/*-----------------------------------------------------------------------------------*/
+
+/*
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend {
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+	font-size:100%;
+	vertical-align:baseline;
+	background:transparent;
+}
+body {
+	line-height:1
+}
+ol, ul {
+	list-style:none
+}
+*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend {
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+	font-size:100%;
+	vertical-align:baseline;
+	background:transparent;
+	font-family: 'Ubuntu', sans-serif;
+}
+
+h1, .h1, h2, .h2, h3, .h3 {
+margin-top: 20px;
+margin-bottom: 10px;
+font-family: 'Ubuntu', sans-serif;
+}
+
+/* ===== content ===== */
+
+.content-title {
+	color: rgb(237, 119, 0);
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: bold;
+}
+
+.content-text {
+	line-height: 22px;
+	color: #606060;
+	font-family: 'Ubuntu', sans-serif;
+}
+.content-text span {
+	font-size:200%;
+	float:left;
+	margin-right:3px;
+}
+
+/* ===== section-title ===== */
+
+.section-title {
+	font-size: 20px;
+	font-weight: 700;
+	color: #505050;
+	text-transform: uppercase;
+	border-bottom: solid 1px #600;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+	margin-top: 10;
+	padding-top: 0;
+}
+
+
+
+/* ===== bs-callout ===== */
+.bs-callout {
+	margin: 20px 0;
+	padding: 20px;
+	border-left: 3px solid #eee;
+}
+.bs-callout-info {
+	background-color: #f4f8fa;
+	border-color: #5bc0de;
+}
+
+
+/* ===== Footer ===== */
+
+footer {
+	margin-top: 60px;
+	padding: 20px 0;
+	background: #3E7A8C;
+	color: white;
+	font-weight: 300;
+}
+footer a {
+	color: #81D685;
+}
+footer a:hover {
+	color: #81D685;
+	text-decoration: none;
+}
+footer .headline {
+	border-bottom: 1px dotted white;
+	margin-bottom: 20px;
+}
+footer .headline h3{
+	text-transform: uppercase;
+	font-weight: 100;
+}
+.legal {
+	padding: 20px 0 10px 0;
+	background: #386F80;
+	color: white;
+	font-weight: 300;
+}
+.legal a {
+	color: #81D685;
+	text-decoration: none;
+}
+.social ul {
+    background: #3E7A8C;
+    color: white;
+    font-size: 24px;
+    margin: 0;
+	padding: 0;
+}
+.social li {
+    float: left;
+    display: block;
+    list-style-type: none;
+    width: 28px;
+    height: 28px;
+    background: #eee;
+    margin: 0 5px 5px 0;
+    text-align: center;
+    line-height: 28px;
+}
+.social li:hover {
+    background: none;
+}
+.social li, .social li:hover {
+    transition: background 0.1s;
+    -webkit-transition: background 0.1s;
+    -moz-transition: background 0.1s;
+}
+.social li a {
+    color: #3E7A8C;
+
+}
+.social li:hover a {
+    color: #fff;
+}
+.social li a, .social li:hover a {
+    transition: color 0.1s;
+    -webkit-transition: color 0.1s;
+    -moz-transition: color 0.1s;
+}
+footer .hl-btn-default {
+	color: #fff;
+	background: none;
+}
+footer .hl-btn-default:hover {
+	color: #3E7A8C;
+	background: #fff;
+	font-weight: bold;
+	border: 1px solid #fff;
+}
+footer .form-control {
+	border: white;
+}
+footer .form-control:focus {
+	border: white;
+}
+footer .sbtn {
+	margin-bottom: 5px;
+}
+
+/* ===== AJAX Waiting ===== */
+
+        .ajaxWaiting {
+ 			vertical-align: middle;
+			width: 46px;
+			height: 38px;
+			padding-top: 8px;		
+			float: center;
+
+
+			text-align: center;
+ 			position: fixed;
+ 			top: 390px; 
+			left: 50%;
+        }
+        
+
+

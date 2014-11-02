@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver">
+		</property>
+           		<property name="url" value="jdbc:mysql://192.168.43.80:3306/drcalldb"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="1qaz2wsx"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.drcall.db.dao.Division</value>
+				<value>com.drcall.db.dao.Role</value>
+				<value>com.drcall.db.dao.Question</value>
+				<value>com.drcall.db.dao.Family</value>
+				<value>com.drcall.db.dao.Schedule</value>
+				<value>com.drcall.db.dao.Appoint</value>
+				<value>com.drcall.db.dao.Recommend</value>
+				<value>com.drcall.db.dao.Memu</value>
+				<value>com.drcall.db.dao.Hospital</value>
+				<value>com.drcall.db.dao.Consume</value>
+				<value>com.drcall.db.dao.Message</value>
+				<value>com.drcall.db.dao.Member</value>
+				<value>com.drcall.db.dao.Notify</value>
+				<value>com.drcall.db.dao.Usr</value>
+				<value>com.drcall.db.dao.Doctor</value>
+				<value>com.drcall.db.dao.FreeExperience</value>
+				<value>com.drcall.db.dao.SystemEmail</value>
+				<value>com.drcall.db.dao.Account</value></list>
+		</property></bean>
+	<bean id="DivisionDAO" class="com.drcall.db.dao.DivisionDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="RoleDAO" class="com.drcall.db.dao.RoleDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="QuestionDAO" class="com.drcall.db.dao.QuestionDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FamilyDAO" class="com.drcall.db.dao.FamilyDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ScheduleDAO" class="com.drcall.db.dao.ScheduleDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="AppointDAO" class="com.drcall.db.dao.AppointDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="RecommendDAO" class="com.drcall.db.dao.RecommendDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="MemuDAO" class="com.drcall.db.dao.MemuDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="HospitalDAO" class="com.drcall.db.dao.HospitalDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ConsumeDAO" class="com.drcall.db.dao.ConsumeDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="MessageDAO" class="com.drcall.db.dao.MessageDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="MemberDAO" class="com.drcall.db.dao.MemberDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="NotifyDAO" class="com.drcall.db.dao.NotifyDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="UsrDAO" class="com.drcall.db.dao.UsrDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="DoctorDAO" class="com.drcall.db.dao.DoctorDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FreeExperienceDAO"
+		class="com.drcall.db.dao.FreeExperienceDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SystemEmailDAO"
+		class="com.drcall.db.dao.SystemEmailDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="AccountDAO" class="com.drcall.db.dao.AccountDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+</beans>

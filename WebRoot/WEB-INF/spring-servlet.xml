@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<bean name="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="contentType" value="utf-8"></property>
+	</bean>
+
+
+	<bean id="propertiesViewResolver"
+		class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="order" value="1" />
+		<property name="basename" value="views" />
+	</bean>
+
+	<bean id="methodNameResolver"
+		class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver" />
+
+	<bean name="jsonView" class="org.springframework.web.servlet.view.json.JsonView">
+	</bean>
+	
+	<bean name="/index/*" class="com.drcall.client.web.IndexController">
+		<property name="messageDAO" ref="MessageDAO" />
+		<property name="hospitalDAO" ref="HospitalDAO" />
+		<property name="divisionDAO" ref="DivisionDAO" />
+		<property name="scheduleDAO" ref="ScheduleDAO" />
+		<property name="memberDAO" ref="MemberDAO" />
+		<property name="familyDAO" ref="FamilyDAO" />
+		<property name="appointDAO" ref="AppointDAO" />
+		<property name="accountDAO" ref="AccountDAO" />
+	</bean>
+	
+	<bean name="/login/*" class="com.drcall.client.web.LoginController">
+		<property name="memberDAO" ref="MemberDAO" />
+		<property name="roleDAO" ref="RoleDAO" />
+		<property name="familyDAO" ref="FamilyDAO" />
+		<property name="memuDAO" ref="MemuDAO" />
+		<property name="systemEmailDAO" ref="SystemEmailDAO" />
+		<property name="recommendDAO" ref="RecommendDAO" />
+		<property name="accountDAO" ref="AccountDAO" />
+	</bean>
+	
+	<bean name="/member/*" class="com.drcall.client.web.MemberController">
+		<property name="memberDAO" ref="MemberDAO" />
+		<property name="familyDAO" ref="FamilyDAO" />
+		<property name="recommendDAO" ref="RecommendDAO" />
+		<property name="systemEmailDAO" ref="SystemEmailDAO" />
+		<property name="accountDAO" ref="AccountDAO" />
+	</bean>
+	
+	<bean name="/appoint/*" class="com.drcall.client.web.AppointController">
+		<property name="memberDAO" ref="MemberDAO" />
+		<property name="hospitalDAO" ref="HospitalDAO" />
+		<property name="divisionDAO" ref="DivisionDAO" />
+		<property name="scheduleDAO" ref="ScheduleDAO" />
+		<property name="familyDAO" ref="FamilyDAO" />
+		<property name="appointDAO" ref="AppointDAO" />
+		<property name="accountDAO" ref="AccountDAO" />
+	</bean>
+	
+	<bean name="/payment/*" class="com.drcall.client.web.PaymentController">
+		<property name="memberDAO" ref="MemberDAO" />
+		<property name="accountDAO" ref="AccountDAO" />
+		<property name="consumeDAO" ref="ConsumeDAO" />
+	</bean>
+	
+	<bean name="/charity/*" class="com.drcall.client.web.CharityController">
+	
+	</bean>
+	
+	<bean name="/test/*" class="com.drcall.client.web.TestController">
+		
+	</bean>
+
+</beans>
