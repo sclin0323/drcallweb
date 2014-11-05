@@ -333,7 +333,7 @@ String hospital_list = (String) request.getAttribute("hospital_list");
 													<th>醫院</th>
 													<th>醫師</th>
 													<th>科</th>
-													
+													<th>候診號</th>
 													<th>狀態</th>
 													<th class="td-actions">變更預約</th>
 													<th class="td-actions">取消</th>
@@ -359,6 +359,8 @@ String hospital_list = (String) request.getAttribute("hospital_list");
 														<td>${appoint.schedule.hospital.name}</td>
 														<td>${appoint.schedule.doctor.name} 醫生</td>
 														<td>${appoint.schedule.division.cnName}</td>
+														
+														<td>${appoint.appNumber}</td>
 														
 														<td>
 															<c:choose>

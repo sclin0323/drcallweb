@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -195,6 +196,11 @@ public class AppointController extends BaseController {
 		appoint.setType(oldAppoint.getType());
 		appoint.setNotifyTake(false);
 		
+		// TEST
+		Random ran = new Random();
+		int appNum = ran.nextInt(42)+1;
+		appoint.setAppNumber(appNum);
+		
 		appointDAO.save(appoint);
 
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -202,7 +208,7 @@ public class AppointController extends BaseController {
 		model.put("hospitalName", appoint.getSchedule().getHospital().getName());
 		model.put("divisionName", appoint.getSchedule().getDivision().getCnName());
 		model.put("doctorName", appoint.getSchedule().getDoctor().getName());
-		model.put("appointNumber", (int)(Math.random()*30));
+		model.put("appointNumber", appNum);
 		
 		ModelAndView mav = new ModelAndView("jsonView", model);
 		return mav;		
@@ -367,6 +373,11 @@ public class AppointController extends BaseController {
 		appoint.setType(0); // 0: web 1: App
 		Schedule schedule = scheduleDAO.findById(scheduleId);
 		appoint.setSchedule(schedule);
+		
+		// TEST
+		Random ran = new Random();
+		int appNum = ran.nextInt(42)+1;
+		appoint.setAppNumber(appNum);
 
 		appointDAO.save(appoint);
 		
@@ -379,7 +390,7 @@ public class AppointController extends BaseController {
 		model.put("hospitalName", appoint.getSchedule().getHospital().getName());
 		model.put("divisionName", appoint.getSchedule().getDivision().getCnName());
 		model.put("doctorName", appoint.getSchedule().getDoctor().getName());
-		model.put("appointNumber", (int)(Math.random()*30));
+		model.put("appointNumber", appNum);
 
 		ModelAndView mav = new ModelAndView("jsonView", model);
 		return mav;
