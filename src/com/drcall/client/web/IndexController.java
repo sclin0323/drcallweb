@@ -215,6 +215,8 @@ public class IndexController extends BaseController {
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		
+		log.info(gson.toJson(scheduleDay.getScheduleByShift(cmd.getSelectShift())));
+		
 		model.put("schedule_shift", gson.toJson(scheduleDay.getScheduleByShift(cmd.getSelectShift())));
 		
 		ModelAndView mav = new ModelAndView("jsonView", model);

@@ -16,6 +16,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.drcall.db.dao.Appoint;
 import com.drcall.db.dao.AppointDAO;
+import com.drcall.db.dao.Division;
+import com.drcall.db.dao.DivisionDAO;
+import com.drcall.db.dao.Doctor;
+import com.drcall.db.dao.DoctorDAO;
+import com.drcall.db.dao.Hospital;
+import com.drcall.db.dao.HospitalDAO;
 import com.drcall.db.dao.Member;
 import com.drcall.db.dao.MemberDAO;
 import com.drcall.db.dao.Schedule;
@@ -37,6 +43,9 @@ public class MonitorAppSecondNotifyJob {
 	private ScheduleDAO scheduleDAO;
 	private MemberDAO memberDAO;
 	private JavaMailSender mailSender;
+	private HospitalDAO hospitalDAO;
+	private DoctorDAO doctorDAO;
+	private DivisionDAO divisionDAO;
 	
 	public void setAppointDAO(AppointDAO appointDAO) {
 		this.appointDAO = appointDAO;
@@ -53,6 +62,16 @@ public class MonitorAppSecondNotifyJob {
 		this.scheduleDAO = scheduleDAO;
 	}
 
+	public void setHospitalDAO(HospitalDAO hospitalDAO) {
+		this.hospitalDAO = hospitalDAO;
+	}
+	public void setDoctorDAO(DoctorDAO doctorDAO) {
+		this.doctorDAO = doctorDAO;
+	}
+	public void setDivisionDAO(DivisionDAO divisionDAO) {
+		this.divisionDAO = divisionDAO;
+	}
+	
 	public void executeMethod() {
 		
 	//	System.out.println("MonitorAppSecondNotifyJob..."+new Date());
@@ -71,28 +90,67 @@ public class MonitorAppSecondNotifyJob {
 			//log.info(appoint.getAppointId());
 			
 			Schedule schedule = scheduleDAO.findById(appoint.getSchedule().getScheduleId());
-			Member menber = memberDAO.findById(appoint.getMember().getMemberId());
+			Member member = memberDAO.findById(appoint.getMember().getMemberId());
+			Hospital hospital = hospitalDAO.findById(schedule.getHospital().getHospitalId());
+			Doctor doctor = doctorDAO.findById(schedule.getDoctor().getDoctorId());
+			Division division = divisionDAO.findById(schedule.getDivision().getDivisionId());
+			
+			
 			//Date date = appointment.getSchedule().getDate();
 			
 			Calendar appCal = Calendar.getInstance();
-			appCal.setTime(schedule.getDate());
+			appCal.setTime(appoint.getCrtTime());
 			appCal.set(Calendar.HOUR_OF_DAY, 0);
 			appCal.set(Calendar.MINUTE, 0);
 			appCal.set(Calendar.SECOND, 0);
 			
 			if (isSameDay(schedule.getDate(), calendar.getTime())){
 				
+				//log.info("============");
+				
 				MimeMessage message = mailSender.createMimeMessage();
 				
 				try {
 					MimeMessageHelper helper = new MimeMessageHelper(message,true);
 
-					//helper.setFrom("sclin0323@gmail.com");
-					helper.setTo(menber.getEmail());
-					helper.setSubject("Second Notification form Dr.Call");
-					helper.setText("Contents..");
+					String email = member.getEmail();
+					String name = member.getName();
+					String patientName = appoint.getName();
+					String hospitalName = hospital.getName();
+					String divisionName = division.getCnName();
+					String doctorName = doctor.getName();
+					Date date = schedule.getDate();
+					int shift = appoint.getShift();
+					int appNumber = appoint.getAppNumber();
+					
+					String shiftName = null;
+					if(shift == 0){
+						shiftName = "早診";
+					} else if(shift == 1){
+						shiftName = "午診";
+					} else if(shift == 2){
+						shiftName = "晚診";
+					}
+					
+					String content = 
+							"Hi " +name+" 先生/小姐\n"+
+							"\t您好~~謝謝選用Dr. Call預約掛號通知服務。\n"+
+							"\t您日前於Dr. Call進行院所的預約掛號，您的掛號訊息如下。此信是由Dr. Call\n"+
+							"發出，提醒您或您的家人朋友明日待就診，記得向工作單位請假與進行工作安排，以利安心就診，\n"+
+							"並預祝平安健康。\n\n"+
+							"掛號姓名："+patientName+"\n"+
+							"掛號院所："+hospitalName+" 院所\n"+
+							"掛號科別："+divisionName+"\n"+
+							"掛號醫生："+doctorName+"\n"+
+							"掛號時間："+date+" "+shiftName+"\n"+
+							"掛號號碼："+appNumber+"\n\n"+
+							"文末\t祝\t健康\n\nDr. Call 團隊 敬上";
+					
+					helper.setTo(member.getEmail());
+					helper.setSubject("Dr. Call 就診提醒");
+					helper.setText(content);
 
-					log.info("send email message...");
+					//log.info("send email message...");
 					mailSender.send(message);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -113,6 +171,10 @@ public class MonitorAppSecondNotifyJob {
 
 	    Calendar calDateB = Calendar.getInstance();
 	    calDateB.setTime(dateB);
+	    
+	    //log.info("Year: "+calDateA.get(Calendar.YEAR)+" "+calDateB.get(Calendar.YEAR));
+	   // log.info("Month: "+calDateA.get(Calendar.MONTH)+" "+calDateB.get(Calendar.MONTH));
+	   // log.info("Day: "+calDateA.get(Calendar.DAY_OF_MONTH)+" "+calDateB.get(Calendar.DAY_OF_MONTH));
 	    
 	    return calDateA.get(Calendar.YEAR) == calDateB.get(Calendar.YEAR)
 	            && calDateA.get(Calendar.MONTH) == calDateB.get(Calendar.MONTH)

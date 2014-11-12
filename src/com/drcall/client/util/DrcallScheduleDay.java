@@ -6,15 +6,20 @@ import com.drcall.db.dao.Schedule;
 
 public class DrcallScheduleDay {
 	
-	private static final int MORNING_SHIFT = 1;
-	private static final int NOON_SHIFT = 2;
-	private static final int NIGHT_SHIFT = 3;
+	private static final int MORNING_SHIFT = 0;
+	private static final int NOON_SHIFT = 1;
+	private static final int NIGHT_SHIFT = 2;
 	
 	private class ScheduleShift{
 		private long scheduleId;
 		private String doctor_name;
-		private int max_number;
-		private int current_number;
+		private int callingNo;
+		private int waitingNum;
+		private int room;
+		
+		//private int current_number;
+		
+		//private int max_number;
 		private boolean status; //0: 沒排班       1: 有排班
 		
 		public void setStatus(boolean status) {
@@ -26,12 +31,18 @@ public class DrcallScheduleDay {
 		public void setDoctor_name(String doctor_name) {
 			this.doctor_name = doctor_name;
 		}
-		public void setMax_number(int max_number) {
-			this.max_number = max_number;
+		public void setCallingNo(int callingNo) {
+			this.callingNo = callingNo;
 		}
-		public void setCurrent_number(int current_number) {
-			this.current_number = current_number;
+		public void setWaitingNum(int waitingNum) {
+			this.waitingNum = waitingNum;
 		}
+		public void setRoom(int room) {
+			this.room = room;
+		}
+		
+		
+		
 	}
 	
 	private String date;
@@ -62,8 +73,9 @@ public class DrcallScheduleDay {
 			ScheduleShift ms = new ScheduleShift();		
 			ms.setScheduleId(schedule.getScheduleId());
 			ms.setDoctor_name(schedule.getDoctor().getName());
-			ms.setMax_number(schedule.getAfternoonShiftRoom());
-			ms.setCurrent_number(schedule.getAfternoonShiftCallingno());
+			ms.setRoom(schedule.getMorningShiftRoom());
+			ms.setCallingNo(schedule.getMorningShiftCallingno());
+			ms.setWaitingNum(schedule.getMorningShiftWaitingnum());
 			ms.setStatus(schedule.getMorningShift());		
 			morningShift.add(ms);
 		
@@ -71,8 +83,9 @@ public class DrcallScheduleDay {
 			ScheduleShift ans = new ScheduleShift();	
 			ans.setScheduleId(schedule.getScheduleId());
 			ans.setDoctor_name(schedule.getDoctor().getName());
-			ans.setMax_number(schedule.getAfternoonShiftRoom());
-			ans.setCurrent_number(schedule.getAfternoonShiftCallingno());
+			ans.setRoom(schedule.getAfternoonShiftRoom());
+			ans.setCallingNo(schedule.getAfternoonShiftCallingno());
+			ans.setWaitingNum(schedule.getAfternoonShiftWaitingnum());
 			ans.setStatus(schedule.getAfternoonShift());	
 			noonShift.add(ans);
 		
@@ -80,9 +93,12 @@ public class DrcallScheduleDay {
 			ScheduleShift ns = new ScheduleShift();
 			ns.setScheduleId(schedule.getScheduleId());
 			ns.setDoctor_name(schedule.getDoctor().getName());
-			ns.setMax_number(schedule.getAfternoonShiftRoom());
-			ns.setCurrent_number(schedule.getAfternoonShiftCallingno());
+			ns.setRoom(schedule.getNightShiftRoom());
+			ns.setCallingNo(schedule.getNightShiftCallingno());
+			ns.setWaitingNum(schedule.getNightShiftWaitingnum());
 			ns.setStatus(schedule.getNightShift());	
+			
+			
 			nightShift.add(ns);
 		
 	}

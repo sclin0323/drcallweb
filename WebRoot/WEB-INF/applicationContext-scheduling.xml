@@ -61,9 +61,12 @@
 	<!-- Send Second Notification -->
 	<bean id="monitorAppSecondNotifyJob" class="com.drcall.client.scheduling.MonitorAppSecondNotifyJob">
 		<property name="appointDAO" ref="AppointDAO" />
-		<property name="scheduleDAO" ref="ScheduleDAO" />
 		<property name="memberDAO" ref="MemberDAO" />
 		<property name="mailSender" ref="MailSender" />
+		<property name="doctorDAO" ref="DoctorDAO" />
+		<property name="hospitalDAO" ref="HospitalDAO" />
+		<property name="divisionDAO" ref="DivisionDAO" />
+		<property name="scheduleDAO" ref="ScheduleDAO" />
 	</bean>
 	<bean id="monitorAppSecondNotifyDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="monitorAppSecondNotifyJob" />

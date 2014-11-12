@@ -93,9 +93,13 @@ public class MonitorAppThirdNotifyJob {
 		    String email = (String) map.get("EMAIL");
 		    Integer appNum = (Integer) map.get("APP_NUMBER");
 		    
-		    log.info(map.get("APPOINT_ID"));
+		  //  log.info(map.get("APPOINT_ID"));
+		    
+		    log.info("shift:"+shift+" isInShiftTime:"+isInShiftTime(shift));
 		    
 		    if(isInShiftTime(shift)){
+		    	
+		    	//log.info(map.get("APPOINT_ID"));
 		    	Integer shiftNow = -1;
 		    	if(shift == 0){                
 		    		shiftNow = (Integer) map.get("MORNING_SHIFT_CALLINGNO");
@@ -107,6 +111,9 @@ public class MonitorAppThirdNotifyJob {
 		    	
 		    	// 1. 過號直接發
 		    	// 2. 小於25號內直接發
+		    	//appNum
+		    	log.info("appNum:"+appNum+" shiftNow: "+shiftNow);
+		    	
 		    	if(appNum <= shiftNow ){
 	    			// 確認準備發送第三通知 
 		    		setPrepareNotification(appointmentId);
@@ -132,10 +139,20 @@ public class MonitorAppThirdNotifyJob {
 
 			//helper.setFrom("sclin0323@gmail.com");
 			helper.setTo(member.getEmail());
-			helper.setSubject("Third Notification form Dr.Call");
-			helper.setText("Contents..");
+			helper.setSubject("Dr. Call 診間訊息");
+			
+			
+			String content = 
+					"Hi " +app.getName()+" 先生/小姐"+
+					"\t您好~~謝謝選用Dr. Call預約掛號通知服務。\n"+
+					"\t在此通知您，您掛號的院所就診序號為 "+app.getAppNumber()+" 號，可準備前往就診。您可下載\n"+
+					"Dr. Call專屬app，可了解即時診間訊息。\n"+
+					"提醒您注意交通行車安全，並預祝就診順利、早日康復。\n\n"+
+					"Dr. Call團隊 關心您";
 
 			log.info("send email message...");
+			
+			helper.setText(content);
 			mailSender.send(message);
 		} catch (Exception e) {
 			e.printStackTrace();

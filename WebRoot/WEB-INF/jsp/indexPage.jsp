@@ -170,22 +170,24 @@ String hospital_list = (String) request.getAttribute("hospital_list");
                         $.each(shifts, function (j, shift) {
 
                             var doctorName = shift.doctor_name;
-                            var maxNumber = shift.max_number;
-                            var currentNumber = shift.current_number;
+                            var waitingNum = shift.waitingNum;
+                            var callingNo = shift.callingNo;
+                            var room = shift.room;
                             var scheduleId = shift.scheduleId;
                             var status = shift.status;
                             
+                           // alert(callingNo+" "+waitingNum);
                       		
                            	if(status == true){
                            		var scheduleHTML = "<div class='form-group'>"+
-                        		"<input class='col-md-2' style='visibility:"+isLogin+"' type='radio' name='queryAppointListSelect' value='"+scheduleId+"' doctorName='"+doctorName+"' currentNumber='"+currentNumber+"' appointNumber='"+maxNumber+"'>"+
+                        		"<input class='col-md-2' style='visibility:"+isLogin+"' type='radio' name='queryAppointListSelect' value='"+scheduleId+"' doctorName='"+doctorName+"' callingNo='"+callingNo+"' waitingNum='"+waitingNum+"'>"+
                         		"<label class='col-md-2 control-label'>有</label>"+
                         		"<label class='col-md-2 control-label'>"+doctorName+"</label>"+
-                        		"<label class='col-md-3 control-label'>"+currentNumber+"</label>"+
-                        		"<label class='col-md-3 control-label'>"+maxNumber+"</label></div>";
+                        		"<label class='col-md-3 control-label'>"+callingNo+"</label>"+
+                        		"<label class='col-md-3 control-label'>"+waitingNum+"</label></div>";
                            	} else if(status == false){
                            		var scheduleHTML = "<div class='form-group'>"+
-                        		"<input class='col-md-2' disabled='true' style='visibility:"+isLogin+"' type='radio' name='queryAppointListSelect' value='"+scheduleId+"' doctorName='"+doctorName+"' currentNumber='"+currentNumber+"' appointNumber='"+maxNumber+"'>"+
+                        		"<input class='col-md-2' disabled='true' style='visibility:"+isLogin+"' type='radio' name='queryAppointListSelect' value='"+scheduleId+"' doctorName='"+doctorName+"' callingNo='"+callingNo+"' waitingNum='"+waitingNum+"'>"+
                         		"<label class='col-md-2 control-label'>無</label>"+
                         		"<label class='col-md-2 control-label'>"+doctorName+"</label>"+
                         		"<label class='col-md-3 control-label'>0</label>"+
@@ -196,6 +198,8 @@ String hospital_list = (String) request.getAttribute("hospital_list");
                     	
                         	
                             $("#queryAppointModal").find("#queryAppointList").append(scheduleHTML);
+                            
+                            
                         });
 
 						var date = $("#select_date").val();
@@ -229,18 +233,22 @@ String hospital_list = (String) request.getAttribute("hospital_list");
 				var shiftName = $("#queryAppointModal").find("#shiftName").html();
             	var scheduleId = $("#queryAppointModal").find("#queryAppointList").find("input[type='radio']:checked").val();
             	var doctorName = $("#queryAppointModal").find("#queryAppointList").find("input[type='radio']:checked").attr("doctorName");
-            	var currentNumber = $("#queryAppointModal").find("#queryAppointList").find("input[type='radio']:checked").attr("currentNumber");
+            	
+            	var callingNo = $("#queryAppointModal").find("#queryAppointList").find("input[type='radio']:checked").attr("callingNo");
+            	var waitingNum = $("#queryAppointModal").find("#queryAppointList").find("input[type='radio']:checked").attr("waitingNum");
+            	
             	var appointNumber = $("#queryAppointModal").find("#queryAppointList").find("input[type='radio']:checked").attr("appointNumber");
             	var shift = $("#queryAppointModal").find("#shift").val();     
             	
+            	//alert(callingNo+" "+waitingNum);
             	
             	$("#quickAppointModal").find("#date").html(date);
             	$("#quickAppointModal").find("#hospitalName").html(hospitalName);
             	$("#quickAppointModal").find("#divisionName").html(divisionName);
             	$("#quickAppointModal").find("#shiftName").html(shiftName);
             	$("#quickAppointModal").find("#doctorName").html(doctorName);
-            	$("#quickAppointModal").find("#currentNumber").html("目前看診序號: "+currentNumber);
-            	$("#quickAppointModal").find("#appointNumber").html("目前掛號人數: "+appointNumber);
+            	$("#quickAppointModal").find("#callingNo").html("目前看診序號: "+callingNo);
+            	$("#quickAppointModal").find("#waitingNum").html("等候人數: "+waitingNum);
             	$("#quickAppointModal").find("#scheduleId").val(scheduleId);
             	$("#quickAppointModal").find("#shift").val(shift);
             	
@@ -506,9 +514,9 @@ String hospital_list = (String) request.getAttribute("hospital_list");
                                     <div class="col-md-12">
                                         <select id="select_shift" name="selectbasic" class="form-control">
                                             <option value="">*時段</option>
-                                            <option value=1>早班 08:00-12:00</option>
-                                            <option value=2>午班 13:00-17:00</option>
-                                            <option value=3>晚班 18:00-21:00</option>
+                                            <option value=0>早班 08:00-12:00</option>
+                                            <option value=1>午班 13:00-17:00</option>
+                                            <option value=2>晚班 18:00-21:00</option>
                                         </select>
                                     </div>
                                 </div>
@@ -844,7 +852,7 @@ String hospital_list = (String) request.getAttribute("hospital_list");
                         		<label class="col-md-2 control-label" for="textinput">是否看診</label>
                                 <label class="col-md-2 control-label" for="textinput">醫生</label>
                                 <label class="col-md-3 control-label" for="textinput">目前看診序號</label>
-                                <label class="col-md-3 control-label" for="textinput">目前掛號人數</label>
+                                <label id="" class="col-md-3 control-label" for="textinput">目前掛號人數</label>
                         </div>
                         
                         <div id="queryAppointList">
@@ -915,10 +923,10 @@ String hospital_list = (String) request.getAttribute("hospital_list");
 	                                	<label id="doctorName" class="control-label" for="textinput"></label>
 	                                </div>
 	                                <div class="col-md-3">
-	                                	<label id="currentNumber" class="control-label" for="textinput"></label>
+	                                	<label id="callingNo" class="control-label" for="textinput"></label>
 	                                </div>
 	                                <div class="col-md-3">
-	                                	<label id="appointNumber" class="control-label" for="textinput"></label>
+	                                	<label id="waitingNum" class="control-label" for="textinput"></label>
 	                                </div>
 	                        </div>
 	                        
