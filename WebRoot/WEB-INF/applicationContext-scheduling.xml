@@ -8,6 +8,21 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
 
+	<!-- Send Message -->
+	<bean id="monitorSendMessageJob" class="com.drcall.client.scheduling.MonitorSendMessageJob">
+		<property name="systemMessageDAO" ref="SystemMessageDAO" />
+	</bean>
+	<bean id="monitorSendMessageDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="monitorSendMessageJob" />
+		<property name="targetMethod" value="executeMethod" />
+	</bean>
+	<bean id="monitorSendMessageCron" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="monitorSendMessageDetail" />
+		<property name="cronExpression" value="0/20 * * * * ?" />
+	</bean>
+	
+	
+	<!-- Send Email -->
 	<bean id="MailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
@@ -22,8 +37,6 @@
        		</props>
 		</property>
 	</bean>
-	
-	<!-- Send Email -->
 	<bean id="monitorSendEmailJob" class="com.drcall.client.scheduling.MonitorSendEmailJob">
 		<property name="mailSender" ref="MailSender"/>
 		<property name="systemEmailDAO" ref="SystemEmailDAO" />
@@ -41,13 +54,13 @@
 	<!-- Send First Notification -->
 	<bean id="monitorAppFirstNotifyJob" class="com.drcall.client.scheduling.MonitorAppFirstNotifyJob">
 		<property name="appointDAO" ref="AppointDAO" />
-		<property name="mailSender" ref="MailSender"/>
 		<property name="memberDAO" ref="MemberDAO" />
 		<property name="doctorDAO" ref="DoctorDAO" />
 		<property name="hospitalDAO" ref="HospitalDAO" />
 		<property name="divisionDAO" ref="DivisionDAO" />
 		<property name="scheduleDAO" ref="ScheduleDAO" />
-		
+		<property name="systemMessageDAO" ref="SystemMessageDAO" />
+		<property name="systemEmailDAO" ref="SystemEmailDAO" />
 	</bean>
 	<bean id="monitorAppFirstNotifyDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="monitorAppFirstNotifyJob" />
@@ -62,11 +75,12 @@
 	<bean id="monitorAppSecondNotifyJob" class="com.drcall.client.scheduling.MonitorAppSecondNotifyJob">
 		<property name="appointDAO" ref="AppointDAO" />
 		<property name="memberDAO" ref="MemberDAO" />
-		<property name="mailSender" ref="MailSender" />
 		<property name="doctorDAO" ref="DoctorDAO" />
 		<property name="hospitalDAO" ref="HospitalDAO" />
 		<property name="divisionDAO" ref="DivisionDAO" />
 		<property name="scheduleDAO" ref="ScheduleDAO" />
+		<property name="systemMessageDAO" ref="SystemMessageDAO" />
+		<property name="systemEmailDAO" ref="SystemEmailDAO" />
 	</bean>
 	<bean id="monitorAppSecondNotifyDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="monitorAppSecondNotifyJob" />
@@ -83,7 +97,8 @@
 		<property name="appointDAO" ref="AppointDAO" />
 		<property name="memberDAO" ref="MemberDAO" />
 		<property name="dataSource" ref="dataSource"/>	
-		<property name="mailSender" ref="MailSender" />
+		<property name="systemMessageDAO" ref="SystemMessageDAO" />
+		<property name="systemEmailDAO" ref="SystemEmailDAO" />
 		<property name="appointmentQuery">
 			<value>
 			<![CDATA[
@@ -96,10 +111,12 @@
 			</value>
 		</property>
 	</bean>
+	
 	<bean id="monitorAppThirdNotifyDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="monitorAppThirdNotifyJob" />
 		<property name="targetMethod" value="executeMethod" />
 	</bean>
+	
 	<bean id="monitorAppThirdNotifyCron" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="monitorAppThirdNotifyDetail" />
 <!-- 		<property name="cronExpression" value="0 */5 7-22 * * ?" /> -->
@@ -110,10 +127,11 @@
 	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
+				<ref bean="monitorSendMessageCron" />
 				<ref bean="monitorSendEmailCron" />
 				<ref bean="monitorAppFirstNotifyCron" />
- 				<ref bean="monitorAppSecondNotifyCron" />
- 				<ref bean="monitorAppThirdNotifyCron" />
+  				<ref bean="monitorAppSecondNotifyCron" />
+  				<ref bean="monitorAppThirdNotifyCron" />
 			</list>
 		</property>
 	</bean>

@@ -365,9 +365,9 @@ String hospital_list = (String) request.getAttribute("hospital_list");
 														<td>
 															<c:choose>
 															  <c:when test="${appoint.status == 0}">預約成功</c:when>
-															  <c:when test="${appoint.status == 1}">完成通知預約成功 (第一通知)</c:when>
-															  <c:when test="${appoint.status == 2}">完成前一日看診通知 (第二通知)</c:when>
-															  <c:when test="${appoint.status == 3}">準備通知看診</c:when>
+															  <c:when test="${appoint.status == 1}">預約成功_通知_第一次通知</c:when>
+															  <c:when test="${appoint.status == 2}">看診前日_通知_第二次通知</c:when>
+															  <c:when test="${appoint.status == 3}">準備提醒看診</c:when>
 															  <c:when test="${appoint.status == 4}">完成通知看診 (第三通知)</c:when>
 															  <c:when test="${appoint.status == 5}">看診完成</c:when>
 															  <c:when test="${appoint.status == 6}">預約取消</c:when>

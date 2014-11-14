@@ -644,31 +644,64 @@ String hospital_list = (String) request.getAttribute("hospital_list");
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-1000" href="#panel-element-1001">如何線上掛號預約</a>
+                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-1000" href="#panel-element-1001"><div class="content-text">為何要選擇Dr. Call的服務與其好處??</div></a>
                                 </div>
                                 <div id="panel-element-1001" class="panel-collapse collapse">
                                     <div class="panel-body">
-                                        Anim pariatur cliche...
+                                        <div class="content-text">Dr. Call和多家院所合作，將門診就診的現況即時提供並通知，可協助求診病患掌握就診現況，並據此安排時間，可避免在院所等候時有傳染的風險，更減少就診成本(請假、停車費…等)。更重要的是可節省寶貴的時間，供運用在其它重要事情上。</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-1000" href="#panel-element-1002">何謂掛號通知</a>
+                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-1000" href="#panel-element-1002"><div class="content-text">市面上與院所都有類似的服務(App)提供，Dr. Call為何要收費??</div></a>
                                 </div>
                                 <div id="panel-element-1002" class="panel-collapse collapse">
                                     <div class="panel-body">
-                                        Anim pariatur cliche...
+                                       <div class="content-text"> 院所提供app與此項服務是在於行銷之用，且受限規模與人力，未有專門的資訊部門，大多以外包方式進行，提供服務一年可正常運作，之後就看院所經費所決定；而同型態的app也有提供，但經營與維護都需成本，以銷售廣方式來維持營運或服務時，是有營運上困難，因生病是人們所不願，有需求才下載app使用下，於此app下廣告得到的成效有限，故無法有收益支持開銷，對更新與進步的動力就變少。Dr. Call有鑑上述原因，故向使用者收費後才提供服務，因有收益才可再開發更多消費者所需的服務，讓更多院所加入，也產生正向循環，而Dr. Call就成為院所與消費者間通知平台，可得到更多院所健康訊息，而消費者更取回對時間的掌握。</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-1000" href="#panel-element-1003">如何購買點數</a>
+                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-1000" href="#panel-element-1003"><div class="content-text">成為Dr. Call可享有的服務項目。</div></a>
                                 </div>
                                 <div id="panel-element-1003" class="panel-collapse collapse">
                                     <div class="panel-body">
-                                        Anim pariatur cliche...
+                                      <div class="content-text"> 可於院所進行預約掛號通知服務、家庭成員的預約掛號通知、吃藥通知…等，後續各種消費者通知的服務，將陸續研發上架提供服務。</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-1000" href="#panel-element-1004"><div class="content-text">想掛號的院所未有於清單上，無法提供服務??</div></a>
+                                </div>
+                                <div id="panel-element-1004" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                     <div class="content-text">因合作需要，院所需將門診就診現況上傳，才可提供相關服務，故需請您向院所反映有此一需求，並告知我們院所名，以利向院所溝通同意開通服務。您可到問題反映中告訴我們這一問題。</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-1000" href="#panel-element-1005"><div class="content-text">Dr. Call提供哪些免費服務??</div></a>
+                                </div>
+                                <div id="panel-element-1005" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                      <div class="content-text">Dr. Call提供各院所的班表供免費查詢，若需掛號與通知則需購買點數才可享受後續服務。</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-1000" href="#panel-element-1006"><div class="content-text">點數的購買與使用上有問題可如何解決??</div></a>
+                                </div>
+                                <div id="panel-element-1006" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                       <div class="content-text">Dr. Call在此先致上歉意，造成您帳務上的困擾與麻煩，對此無論何時您都可致電0933080535或是到問題反映告訴我們這一問題，將有專人提供協助解決。</div>
                                     </div>
                                 </div>
                             </div>

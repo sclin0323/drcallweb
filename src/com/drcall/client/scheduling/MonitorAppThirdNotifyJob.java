@@ -1,5 +1,6 @@
 package com.drcall.client.scheduling;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,8 +26,10 @@ import com.drcall.db.dao.Member;
 import com.drcall.db.dao.MemberDAO;
 import com.drcall.db.dao.Schedule;
 import com.drcall.db.dao.ScheduleDAO;
+import com.drcall.db.dao.SystemMessage;
+import com.drcall.db.dao.SystemMessageDAO;
 
-public class MonitorAppThirdNotifyJob {
+public class MonitorAppThirdNotifyJob extends BaseNotifyJob{
 	private static final Log log = LogFactory.getLog(MonitorAppThirdNotifyJob.class);
 	
 	protected static final Integer STATUS_APP_OK = 0; 
@@ -44,9 +47,7 @@ public class MonitorAppThirdNotifyJob {
 	private AppointDAO appointDAO;
 	private BasicDataSource dataSource;
 	private String appointmentQuery;
-	private JavaMailSender mailSender;
 	private MemberDAO memberDAO;
-	
 	
 	public void setMemberDAO(MemberDAO memberDAO) {
 		this.memberDAO = memberDAO;
@@ -64,19 +65,31 @@ public class MonitorAppThirdNotifyJob {
 	public void setAppointmentQuery(String appointmentQuery) {
 		this.appointmentQuery = appointmentQuery;
 	}
-	
-	public void setMailSender(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
-	}
 
 
 	public void executeMethod() {
-		log.info("MonitorAppThirdNotifyJob....");
+		//log.info("MonitorAppThirdNotifyJob....");
 		
 		// send notification 
 		List<Appoint> appList = appointDAO.findByStatus(STATUS_PREPARE_THIRD_NOTIFY);
 		for(Appoint app : appList){
-			sendNotification(app);
+			Member member = memberDAO.findById(app.getMember().getMemberId());
+			
+			String subject = "Dr. Call 診間訊息";
+			
+			String content = 
+					"Hi " +app.getName()+" 先生/小姐"+
+					"\t您好~~謝謝選用Dr. Call預約掛號通知服務。\n"+
+					"\t在此通知您，您掛號的院所就診序號為 "+app.getAppNumber()+" 號，可準備前往就診。您可下載\n"+
+					"Dr. Call專屬app，可了解即時診間訊息。\n"+
+					"提醒您注意交通行車安全，並預祝就診順利、早日康復。\n\n"+
+					"Dr. Call團隊 關心您";
+
+			// 發送 Email
+			this.saveNotifyEmail(subject, content, member.getEmail());
+			
+			// 發送簡訊
+			this.saveSystemMessage(subject, content, app.getTel());
 		}
 		
 		
@@ -128,49 +141,10 @@ public class MonitorAppThirdNotifyJob {
 		}  
 	}
 
-
-	private void sendNotification(Appoint app) {
-		
-		MimeMessage message = mailSender.createMimeMessage();
-		Member member = memberDAO.findById(app.getMember().getMemberId());
-		
-		try {
-			MimeMessageHelper helper = new MimeMessageHelper(message,true);
-
-			//helper.setFrom("sclin0323@gmail.com");
-			helper.setTo(member.getEmail());
-			helper.setSubject("Dr. Call 診間訊息");
-			
-			
-			String content = 
-					"Hi " +app.getName()+" 先生/小姐"+
-					"\t您好~~謝謝選用Dr. Call預約掛號通知服務。\n"+
-					"\t在此通知您，您掛號的院所就診序號為 "+app.getAppNumber()+" 號，可準備前往就診。您可下載\n"+
-					"Dr. Call專屬app，可了解即時診間訊息。\n"+
-					"提醒您注意交通行車安全，並預祝就診順利、早日康復。\n\n"+
-					"Dr. Call團隊 關心您";
-
-			log.info("send email message...");
-			
-			helper.setText(content);
-			mailSender.send(message);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		
-		app.setStatus(STATUS_THIRD_NOTIFY_OK);
-		appointDAO.attachDirty(app);
-		
-	}
-
 	private void setPrepareNotification(Long appointmentId) {
-
-			
 		Appoint appoint = appointDAO.findById(appointmentId);
 		appoint.setStatus(STATUS_PREPARE_THIRD_NOTIFY);
 		appointDAO.attachDirty(appoint);
-
 	}
 
 

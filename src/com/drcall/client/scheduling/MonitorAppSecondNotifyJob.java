@@ -1,5 +1,6 @@
 package com.drcall.client.scheduling;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,8 +27,10 @@ import com.drcall.db.dao.Member;
 import com.drcall.db.dao.MemberDAO;
 import com.drcall.db.dao.Schedule;
 import com.drcall.db.dao.ScheduleDAO;
+import com.drcall.db.dao.SystemMessage;
+import com.drcall.db.dao.SystemMessageDAO;
 
-public class MonitorAppSecondNotifyJob {
+public class MonitorAppSecondNotifyJob extends BaseNotifyJob{
 	private static final Log log = LogFactory.getLog(MonitorAppSecondNotifyJob.class);
 	
 	protected static final Integer STATUS_APP_OK = 0; 
@@ -42,18 +45,14 @@ public class MonitorAppSecondNotifyJob {
 	private AppointDAO appointDAO;
 	private ScheduleDAO scheduleDAO;
 	private MemberDAO memberDAO;
-	private JavaMailSender mailSender;
 	private HospitalDAO hospitalDAO;
 	private DoctorDAO doctorDAO;
 	private DivisionDAO divisionDAO;
-	
+
 	public void setAppointDAO(AppointDAO appointDAO) {
 		this.appointDAO = appointDAO;
 	}
 	
-	public void setMailSender(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
-	}
 	public void setMemberDAO(MemberDAO memberDAO) {
 		this.memberDAO = memberDAO;
 	}
@@ -76,7 +75,7 @@ public class MonitorAppSecondNotifyJob {
 		
 	//	System.out.println("MonitorAppSecondNotifyJob..."+new Date());
 		
-		//log.info("MonitorAppSecondNotifyJob..."+new Date());
+		log.info("MonitorAppSecondNotifyJob..."+new Date());
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
@@ -87,7 +86,7 @@ public class MonitorAppSecondNotifyJob {
 		for(Appoint appoint : list){
 			
 			
-			//log.info(appoint.getAppointId());
+			log.info(appoint.getAppointId());
 			
 			Schedule schedule = scheduleDAO.findById(appoint.getSchedule().getScheduleId());
 			Member member = memberDAO.findById(appoint.getMember().getMemberId());
@@ -108,10 +107,7 @@ public class MonitorAppSecondNotifyJob {
 				
 				//log.info("============");
 				
-				MimeMessage message = mailSender.createMimeMessage();
 				
-				try {
-					MimeMessageHelper helper = new MimeMessageHelper(message,true);
 
 					String email = member.getEmail();
 					String name = member.getName();
@@ -132,6 +128,8 @@ public class MonitorAppSecondNotifyJob {
 						shiftName = "晚診";
 					}
 					
+					String subject = "Dr.Call 預約掛號成功通知信件";
+					
 					String content = 
 							"Hi " +name+" 先生/小姐\n"+
 							"\t您好~~謝謝選用Dr. Call預約掛號通知服務。\n"+
@@ -145,17 +143,14 @@ public class MonitorAppSecondNotifyJob {
 							"掛號時間："+date+" "+shiftName+"\n"+
 							"掛號號碼："+appNumber+"\n\n"+
 							"文末\t祝\t健康\n\nDr. Call 團隊 敬上";
-					
-					helper.setTo(member.getEmail());
-					helper.setSubject("Dr. Call 就診提醒");
-					helper.setText(content);
 
-					//log.info("send email message...");
-					mailSender.send(message);
-				} catch (Exception e) {
-					e.printStackTrace();
-					continue;
-				}
+				
+				// 發送 Email
+				this.saveNotifyEmail(subject, content, member.getEmail());
+				
+				// 發送簡訊
+				this.saveSystemMessage(subject, content, appoint.getTel());
+			
 				
 				appoint.setStatus(STATUS_SECOND_NOTIFY_OK);
 				appointDAO.attachDirty(appoint);

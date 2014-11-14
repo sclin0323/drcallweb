@@ -1,5 +1,6 @@
 package com.drcall.client.scheduling;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -27,8 +28,10 @@ import com.drcall.db.dao.Member;
 import com.drcall.db.dao.MemberDAO;
 import com.drcall.db.dao.Schedule;
 import com.drcall.db.dao.ScheduleDAO;
+import com.drcall.db.dao.SystemMessage;
+import com.drcall.db.dao.SystemMessageDAO;
 
-public class MonitorAppFirstNotifyJob {
+public class MonitorAppFirstNotifyJob extends BaseNotifyJob{
 	private static final Log log = LogFactory.getLog(MonitorAppFirstNotifyJob.class);
 	
 	protected static final Integer STATUS_APP_OK = 0; 
@@ -46,8 +49,7 @@ public class MonitorAppFirstNotifyJob {
 	private HospitalDAO hospitalDAO;
 	private DoctorDAO doctorDAO;
 	private DivisionDAO divisionDAO;
-	private JavaMailSender mailSender;
-	
+
 	public void setHospitalDAO(HospitalDAO hospitalDAO) {
 		this.hospitalDAO = hospitalDAO;
 	}
@@ -62,9 +64,6 @@ public class MonitorAppFirstNotifyJob {
 	}
 	public void setAppointDAO(AppointDAO appointDAO) {
 		this.appointDAO = appointDAO;
-	}
-	public void setMailSender(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
 	}
 	public void setMemberDAO(MemberDAO memberDAO) {
 		this.memberDAO = memberDAO;
@@ -100,6 +99,8 @@ public class MonitorAppFirstNotifyJob {
 				shiftName = "晚診";
 			}
 			
+			String subject = "Dr.Call 預約掛號成功通知信件";
+			
 			String content = 
 					name+" 您好:\n"+
 					"\t謝謝您由Dr. Call進行掛號，此封信是通知您已完成掛號，相關掛號訊息如下：\n\n"+
@@ -112,23 +113,14 @@ public class MonitorAppFirstNotifyJob {
 					"將於到診前主動發出訊息通知前往就診，謝謝。"+"\n\n"+
 					"文末\t祝\t健康\n\nDr. Call 團隊 敬上";
 			
-			MimeMessage message = mailSender.createMimeMessage();
 			
-			try {
-				MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-				helper.setFrom("sam_lin@quantatw.com");
-				helper.setTo(member.getEmail());
-				helper.setSubject("Dr.Call 預約掛號成功通知信件");
-				helper.setText(content);
-				
-				log.info("send email message...");
-				mailSender.send(message);
-			} catch (Exception e) {
-				e.printStackTrace();
-				continue;
-			}
+			// 發送 Email
+			this.saveNotifyEmail(subject, content, email);
 			
+			// 發送簡訊
+			this.saveSystemMessage(subject, content, appoint.getTel());
+			
+			// 更新狀態
 			appoint.setStatus(STATUS_FIRST_NOFIFY_OK);
 	
 			appointDAO.attachDirty(appoint);
