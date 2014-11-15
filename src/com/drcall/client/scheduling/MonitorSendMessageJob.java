@@ -35,8 +35,8 @@ public class MonitorSendMessageJob {
 			
 			// TODO Auto-generated method stub
 			SMSHttpServiceUtil sms=new SMSHttpServiceUtil();
-			String userID="Sector";	//帳號
-			String password="Sector";	//密碼
+			String userID="0970866777";	//帳號
+			String password="67m5";	//密碼
 			String subject=systemMessage.getSubject();	//簡訊主旨，主旨不會隨著簡訊內容發送出去。用以註記本次發送之用途。可傳入空字串。
 			String content=systemMessage.getContent();	//簡訊發送內容
 			String mobile=systemMessage.getMobile();	//接收人之手機號碼。格式為: +886912345678或09123456789。多筆接收人時，請以半形逗點隔開( , )，如0912345678,0922333444。

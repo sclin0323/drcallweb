@@ -127,8 +127,8 @@
 	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="monitorSendMessageCron" />
-				<ref bean="monitorSendEmailCron" />
+ 				<ref bean="monitorSendMessageCron" />
+ 				<ref bean="monitorSendEmailCron" />
 				<ref bean="monitorAppFirstNotifyCron" />
   				<ref bean="monitorAppSecondNotifyCron" />
   				<ref bean="monitorAppThirdNotifyCron" />

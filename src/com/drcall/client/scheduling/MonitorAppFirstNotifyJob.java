@@ -73,7 +73,15 @@ public class MonitorAppFirstNotifyJob extends BaseNotifyJob{
 		List<Appoint> list = appointDAO.findByStatus(STATUS_APP_OK);
 		
 		for(Appoint appoint : list){
-
+			
+			
+			// 計算時間 預約後至少超過15秒再進行通知
+			Date nowDate = new Date();
+			if ((nowDate.getTime() - appoint.getCrtTime().getTime() ) <= 1000 * 10){
+				continue;
+			}
+			
+			
 			Member member = memberDAO.findById(appoint.getMember().getMemberId());
 			Schedule schedule = scheduleDAO.findById(appoint.getSchedule().getScheduleId());
 			Hospital hospital = hospitalDAO.findById(schedule.getHospital().getHospitalId());
@@ -101,7 +109,7 @@ public class MonitorAppFirstNotifyJob extends BaseNotifyJob{
 			
 			String subject = "Dr.Call 預約掛號成功通知信件";
 			
-			String content = 
+			String emailContent = 
 					name+" 您好:\n"+
 					"\t謝謝您由Dr. Call進行掛號，此封信是通知您已完成掛號，相關掛號訊息如下：\n\n"+
 					"掛號姓名："+patientName+"\n"+
@@ -114,11 +122,13 @@ public class MonitorAppFirstNotifyJob extends BaseNotifyJob{
 					"文末\t祝\t健康\n\nDr. Call 團隊 敬上";
 			
 			
+			
+			
 			// 發送 Email
-			this.saveNotifyEmail(subject, content, email);
+			this.saveNotifyEmail(subject, emailContent, email);
 			
 			// 發送簡訊
-			this.saveSystemMessage(subject, content, appoint.getTel());
+			this.saveSystemMessage(subject, "1", appoint.getTel());
 			
 			// 更新狀態
 			appoint.setStatus(STATUS_FIRST_NOFIFY_OK);

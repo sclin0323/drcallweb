@@ -144,12 +144,17 @@ public class MonitorAppSecondNotifyJob extends BaseNotifyJob{
 							"掛號號碼："+appNumber+"\n\n"+
 							"文末\t祝\t健康\n\nDr. Call 團隊 敬上";
 
+					
+					String messageContent = 
+							name+" 您好:\n"+
+							"此訊息由Dr. Call發出，提醒您明日待就診，記得請假與進行工作安排，並祝平安健康。\n\n"+
+							"Dr. Call團隊 提醒您";
 				
 				// 發送 Email
 				this.saveNotifyEmail(subject, content, member.getEmail());
 				
 				// 發送簡訊
-				this.saveSystemMessage(subject, content, appoint.getTel());
+				this.saveSystemMessage(subject, messageContent, appoint.getTel());
 			
 				
 				appoint.setStatus(STATUS_SECOND_NOTIFY_OK);

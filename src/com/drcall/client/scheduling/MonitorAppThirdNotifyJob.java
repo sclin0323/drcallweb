@@ -89,7 +89,11 @@ public class MonitorAppThirdNotifyJob extends BaseNotifyJob{
 			this.saveNotifyEmail(subject, content, member.getEmail());
 			
 			// 發送簡訊
-			this.saveSystemMessage(subject, content, app.getTel());
+			this.saveSystemMessage(subject, "3", app.getTel());
+			
+			//
+			app.setStatus(STATUS_THIRD_NOTIFY_OK);
+			appointDAO.attachDirty(app);
 		}
 		
 		
@@ -108,7 +112,7 @@ public class MonitorAppThirdNotifyJob extends BaseNotifyJob{
 		    
 		  //  log.info(map.get("APPOINT_ID"));
 		    
-		    log.info("shift:"+shift+" isInShiftTime:"+isInShiftTime(shift));
+		    //log.info("shift:"+shift+" isInShiftTime:"+isInShiftTime(shift));
 		    
 		    if(isInShiftTime(shift)){
 		    	

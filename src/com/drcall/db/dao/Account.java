@@ -166,6 +166,9 @@ public class Account implements java.io.Serializable {
 		if(lists.size() == 0){
 			return 0;
 		} else {
+			
+			System.out.println(lists.get(lists.size()-1).getAccountId());
+			
 			return lists.get(lists.size()-1).getBalance();
 		} 
 	}
