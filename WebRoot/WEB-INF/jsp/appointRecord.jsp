@@ -465,9 +465,9 @@ String hospital_list = (String) request.getAttribute("hospital_list");
                                 <div class="col-md-8">
                                      <select id="select_shift" name="selectbasic" class="form-control">
                                             <option value="">*時段</option>
-                                            <option value=1>早班 08:00-12:00</option>
-                                            <option value=2>午班 13:00-17:00</option>
-                                            <option value=3>晚班 18:00-21:00</option>
+                                            <option value=0>早班 08:00-12:00</option>
+                                            <option value=1>午班 13:00-17:00</option>
+                                            <option value=2>晚班 18:00-21:00</option>
                                      </select>
                                 </div>
                             </div>    

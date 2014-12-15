@@ -85,17 +85,12 @@ public class MonitorAppSecondNotifyJob extends BaseNotifyJob{
 		
 		for(Appoint appoint : list){
 			
-			
-			log.info(appoint.getAppointId());
-			
 			Schedule schedule = scheduleDAO.findById(appoint.getSchedule().getScheduleId());
 			Member member = memberDAO.findById(appoint.getMember().getMemberId());
 			Hospital hospital = hospitalDAO.findById(schedule.getHospital().getHospitalId());
 			Doctor doctor = doctorDAO.findById(schedule.getDoctor().getDoctorId());
 			Division division = divisionDAO.findById(schedule.getDivision().getDivisionId());
 			
-			
-			//Date date = appointment.getSchedule().getDate();
 			
 			Calendar appCal = Calendar.getInstance();
 			appCal.setTime(appoint.getCrtTime());
@@ -104,10 +99,6 @@ public class MonitorAppSecondNotifyJob extends BaseNotifyJob{
 			appCal.set(Calendar.SECOND, 0);
 			
 			if (isSameDay(schedule.getDate(), calendar.getTime())){
-				
-				//log.info("============");
-				
-				
 
 					String email = member.getEmail();
 					String name = member.getName();
@@ -128,7 +119,7 @@ public class MonitorAppSecondNotifyJob extends BaseNotifyJob{
 						shiftName = "晚診";
 					}
 					
-					String subject = "Dr.Call 預約掛號成功通知信件";
+					String subject = "Dr. Call就診提醒";
 					
 					String content = 
 							"Hi " +name+" 先生/小姐\n"+
@@ -146,7 +137,7 @@ public class MonitorAppSecondNotifyJob extends BaseNotifyJob{
 
 					
 					String messageContent = 
-							name+" 您好:\n"+
+							appoint.getName()+" 您好:\n"+
 							"此訊息由Dr. Call發出，提醒您明日待就診，記得請假與進行工作安排，並祝平安健康。\n\n"+
 							"Dr. Call團隊 提醒您";
 				

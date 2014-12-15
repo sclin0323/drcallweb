@@ -343,7 +343,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										    <h4 class="content-title">建立親屬資料，以利協助家人親屬預約掛號並得到通知的服務</h4>
 										    <div class="content-text">Dr. Call了解您想對家人好的心意與需求，更想讓家人享受這服務。Dr. Call在此提供建立家人清單資料，完成後就可供為家人進行預約掛號，並進行通知服務。</div>
 										</div>
-								<form id="family_form" class="col-md-12 form-horizontal">
+								<form id="family_form" class="col-md-12 form-horizontal" autocomplete="off">
 									<fieldset>
 										
 										<div class="form-group">

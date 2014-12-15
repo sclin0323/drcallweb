@@ -78,18 +78,23 @@ public class MonitorAppThirdNotifyJob extends BaseNotifyJob{
 			String subject = "Dr. Call 診間訊息";
 			
 			String content = 
-					"Hi " +app.getName()+" 先生/小姐"+
+					"Hi " +member.getName()+" 先生/小姐"+
 					"\t您好~~謝謝選用Dr. Call預約掛號通知服務。\n"+
 					"\t在此通知您，您掛號的院所就診序號為 "+app.getAppNumber()+" 號，可準備前往就診。您可下載\n"+
 					"Dr. Call專屬app，可了解即時診間訊息。\n"+
 					"提醒您注意交通行車安全，並預祝就診順利、早日康復。\n\n"+
 					"Dr. Call團隊 關心您";
 
+			String messageContent = 
+					"Hi " +app.getName()+" 先生/小姐"+
+					"\t您預約就診序號為xx號，已可前往就診。提醒注意行車安全，祝就診順利、早日康復。\n\n"+
+					"Dr. Call團隊 關心您";
+			
 			// 發送 Email
 			this.saveNotifyEmail(subject, content, member.getEmail());
 			
 			// 發送簡訊
-			this.saveSystemMessage(subject, "3", app.getTel());
+			this.saveSystemMessage(subject, messageContent, app.getTel());
 			
 			//
 			app.setStatus(STATUS_THIRD_NOTIFY_OK);

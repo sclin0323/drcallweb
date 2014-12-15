@@ -50,6 +50,7 @@
 		<property name="systemEmailDAO" ref="SystemEmailDAO" />
 		<property name="recommendDAO" ref="RecommendDAO" />
 		<property name="accountDAO" ref="AccountDAO" />
+		<property name="systemMessageDAO" ref="SystemMessageDAO" />
 	</bean>
 	
 	<bean name="/member/*" class="com.drcall.client.web.MemberController">
@@ -68,6 +69,7 @@
 		<property name="familyDAO" ref="FamilyDAO" />
 		<property name="appointDAO" ref="AppointDAO" />
 		<property name="accountDAO" ref="AccountDAO" />
+		<property name="systemEmailDAO" ref="SystemEmailDAO" />
 	</bean>
 	
 	<bean name="/payment/*" class="com.drcall.client.web.PaymentController">

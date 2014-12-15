@@ -44,6 +44,10 @@ public class BaseNotifyJob {
 	
 	public void saveSystemMessage(String subject, String content, String mobile){
 		
+		System.out.println("subject:"+subject);
+		System.out.println("content:"+content);
+		System.out.println("mobile:"+mobile);
+		
 		SystemMessage message = new SystemMessage();
 		
 		message.setContent(content);

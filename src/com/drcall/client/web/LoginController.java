@@ -1,6 +1,7 @@
 package com.drcall.client.web;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drcall.client.command.MemberCommand;
 import com.drcall.client.scheduling.MonitorSendEmailJob;
+import com.drcall.client.scheduling.MonitorSendMessageJob;
 import com.drcall.client.util.SendMailUtil;
 import com.drcall.db.dao.Account;
 import com.drcall.db.dao.AccountDAO;
@@ -26,6 +28,8 @@ import com.drcall.db.dao.RecommendDAO;
 import com.drcall.db.dao.RoleDAO;
 import com.drcall.db.dao.SystemEmail;
 import com.drcall.db.dao.SystemEmailDAO;
+import com.drcall.db.dao.SystemMessage;
+import com.drcall.db.dao.SystemMessageDAO;
 
 public class LoginController extends BaseController {
 	private static final Log log = LogFactory.getLog(LoginController.class);
@@ -39,7 +43,13 @@ public class LoginController extends BaseController {
 	private RecommendDAO recommendDAO;
 	private SystemEmailDAO systemEmailDAO;
 	private AccountDAO accountDAO;
+	private SystemMessageDAO systemMessageDAO;
 	 
+	
+	public void setSystemMessageDAO(SystemMessageDAO systemMessageDAO) {
+		this.systemMessageDAO = systemMessageDAO;
+	}
+
 	public void setRecommendDAO(RecommendDAO recommendDAO) {
 		this.recommendDAO = recommendDAO;
 	}
@@ -145,7 +155,7 @@ public class LoginController extends BaseController {
 		if(obj == null){		
 			Member member = new Member();
 			member.setMemberId(cmd.getMemberId());
-			member.setIdentifyCode("12345678");
+			member.setIdentifyCode(createIdentifyCode(8));
 			member.setIsIdentify(false);
 			member.setCrtDate(new java.sql.Timestamp(new java.util.Date().getTime()));
 			
@@ -154,12 +164,31 @@ public class LoginController extends BaseController {
 			
 			memberDAO.save(member);
 			
+			// Send Message
+			SystemMessage message = new SystemMessage();
+			message.setContent(member.getIdentifyCode());
+			message.setMobile(member.getMemberId());
+			message.setCrtDate(new Timestamp(new Date().getTime()));
+			message.setStatus(MonitorSendMessageJob.STATUS_MESSAGE_NOT_SEND);
+			message.setSubject("Drcall Identify Code");
+			systemMessageDAO.save(message);
+			
 			model.put("status", true);
 		} else {
 			
 			if(obj.getIsIdentify() == false){
 				// sent message to user phone....
-				obj.setIdentifyCode("12345678");
+				obj.setIdentifyCode(createIdentifyCode(8));
+				
+				// Send Message
+				SystemMessage message = new SystemMessage();
+				message.setContent(obj.getIdentifyCode());
+				message.setMobile(obj.getMemberId());
+				message.setCrtDate(new Timestamp(new Date().getTime()));
+				message.setStatus(MonitorSendMessageJob.STATUS_MESSAGE_NOT_SEND);
+				message.setSubject("Drcall Identify Code");
+				systemMessageDAO.save(message);
+				
 				
 				memberDAO.attachDirty(obj);
 				model.put("status", true);	

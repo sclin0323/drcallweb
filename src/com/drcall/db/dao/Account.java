@@ -36,7 +36,7 @@ public class Account implements java.io.Serializable {
 	
 	private static final int POINT_RECOMMEND = 1;
 	private static final int POINT_BE_RECOMMEND = 1;
-	private static final int POINT_NEW_MEMBER = 2;
+	private static final int POINT_NEW_MEMBER = 200; // Test defaule is 2
 	private static final int POINT_APPOINTMENT = 2;
 	
 	

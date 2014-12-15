@@ -11,8 +11,8 @@
 		<property name="driverClassName"
 			value="com.mysql.jdbc.Driver">
 		</property>
- 				<property name="url" value="jdbc:mysql://192.168.43.80:3306/drcalldb"></property>
-<!--            		<property name="url" value="jdbc:mysql://127.0.0.1:3306/drcalldb"></property> -->
+<!--  				<property name="url" value="jdbc:mysql://54.255.152.201:3306/drcalldb"></property> -->
+              		<property name="url" value="jdbc:mysql://127.0.0.1:3306/drcalldb"></property>
 		<property name="username" value="root"></property>
 		<property name="password" value="1qaz2wsx"></property>
 	</bean>

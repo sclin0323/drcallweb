@@ -89,7 +89,6 @@ public class MonitorAppFirstNotifyJob extends BaseNotifyJob{
 			Division division = divisionDAO.findById(schedule.getDivision().getDivisionId());
 			
 			String email = member.getEmail();
-			String name = member.getName();
 			String patientName = appoint.getName();
 			String hospitalName = hospital.getName();
 			String divisionName = division.getCnName();
@@ -110,7 +109,7 @@ public class MonitorAppFirstNotifyJob extends BaseNotifyJob{
 			String subject = "Dr.Call 預約掛號成功通知信件";
 			
 			String emailContent = 
-					name+" 您好:\n"+
+					member.getName()+" 您好:\n"+
 					"\t謝謝您由Dr. Call進行掛號，此封信是通知您已完成掛號，相關掛號訊息如下：\n\n"+
 					"掛號姓名："+patientName+"\n"+
 					"掛號院所："+hospitalName+" 院所\n"+
@@ -122,13 +121,16 @@ public class MonitorAppFirstNotifyJob extends BaseNotifyJob{
 					"文末\t祝\t健康\n\nDr. Call 團隊 敬上";
 			
 			
-			
+			String messageContent = 
+					appoint.getName()+" 您好:\n"+
+					"\t此訊息告知您已完成預約掛號，可下載Dr. Call的App與Email信箱確認詳情。\n\n"+
+					"Dr. Call團隊 感謝您";
 			
 			// 發送 Email
 			this.saveNotifyEmail(subject, emailContent, email);
 			
 			// 發送簡訊
-			this.saveSystemMessage(subject, "1", appoint.getTel());
+			this.saveSystemMessage(subject, messageContent, appoint.getTel());
 			
 			// 更新狀態
 			appoint.setStatus(STATUS_FIRST_NOFIFY_OK);

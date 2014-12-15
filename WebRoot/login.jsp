@@ -417,7 +417,7 @@ if("true".equals(isRecommend)){
 							
 							<div class="form-group">
 								<div class="col-sm-12">
-									<input type="text" class="form-control" id="address" placeholder="*地址" required>
+									<input type="text" class="form-control" id="address" placeholder="地址" >
 								</div>
 							</div>
 

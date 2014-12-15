@@ -1,6 +1,7 @@
 package com.drcall.client.web;
 
 import java.security.Principal;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,9 +41,12 @@ import com.drcall.db.dao.Member;
 import com.drcall.db.dao.MemberDAO;
 import com.drcall.db.dao.Schedule;
 import com.drcall.db.dao.ScheduleDAO;
+import com.drcall.db.dao.SystemEmail;
+import com.drcall.db.dao.SystemEmailDAO;
 import com.drcall.client.command.AppointCommand;
 import com.drcall.client.command.AutoCompletedCommand;
 import com.drcall.client.command.ScheduleCommand;
+import com.drcall.client.scheduling.MonitorSendEmailJob;
 import com.drcall.client.util.DrcallScheduleDay;
 import com.google.gson.Gson;
 
@@ -66,8 +70,13 @@ public class AppointController extends BaseController {
 	private FamilyDAO familyDAO;
 	private AppointDAO appointDAO;
 	private AccountDAO accountDAO;
+	private SystemEmailDAO systemEmailDAO;
 
 	
+	public void setSystemEmailDAO(SystemEmailDAO systemEmailDAO) {
+		this.systemEmailDAO = systemEmailDAO;
+	}
+
 	public void setAccountDAO(AccountDAO accountDAO) {
 		this.accountDAO = accountDAO;
 	}
@@ -281,6 +290,25 @@ public class AppointController extends BaseController {
 			appoint.setStatus(STATUS_APP_CANCEL);
 			appointDAO.attachDirty(appoint);
 			model.put("status", true);
+			
+			// Send email message
+			String content = 
+					"Hi " +appoint.getMember().getName()+" 先生/小姐\n"+
+					"\t您好~~謝謝選用Dr. Call預約掛號通知服務。\n"+
+					"您已更動如下的預約掛號時間，在此通知您知悉與確認。\n"+
+					"Dr. Call對預約掛號的刪除，將由帳戶中扣除1點，建議您若預約需刪除，可以行程更動方式進行。若此一行程非您所更動，再請您與Dr. Call團隊聯絡。\n\n"+
+					"Dr. Call團隊 關心您";
+
+			
+			SystemEmail email = new SystemEmail();
+			email.setCrtDate(new Timestamp(new Date().getTime()));
+			email.setSendTo(appoint.getMember().getEmail());
+			email.setStatus(MonitorSendEmailJob.STATUS_EMAIL_NOT_SEND);
+			email.setText(content);
+			email.setTitle("Dr. Call 預約刪除");
+			
+			systemEmailDAO.save(email);
+			
 		} else {
 			model.put("status", false);
 		}

@@ -89,7 +89,7 @@
 	<bean id="monitorAppSecondNotifyCron" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="monitorAppSecondNotifyDetail" />
 <!--  		<property name="cronExpression" value="0 30 12-22/3 * * ?" /> -->
- 		<property name="cronExpression" value="0/20 * * * * ?" />
+ 		<property name="cronExpression" value="0/30 * * * * ?" />
 	</bean>
 	
 	<!-- Send Third Notification -->
@@ -127,7 +127,7 @@
 	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
- 				<ref bean="monitorSendMessageCron" />
+  				<ref bean="monitorSendMessageCron" />
  				<ref bean="monitorSendEmailCron" />
 				<ref bean="monitorAppFirstNotifyCron" />
   				<ref bean="monitorAppSecondNotifyCron" />
