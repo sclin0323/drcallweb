@@ -70,15 +70,15 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
-	   <servlet>
-             <display-name> MyHttpDownloadServlet</display-name >
-             <servlet-name> MyHttpDownloadServlet</servlet-name >
-             <servlet-class> com.drcall.client.web.MyHttpDownloadServlet</servlet-class >
-       </servlet>
-       <servlet-mapping>
-             <servlet-name> MyHttpDownloadServlet</servlet-name >
-             <url-pattern> /http</url-pattern >
-       </servlet-mapping>
+<!-- 	   <servlet> -->
+<!--              <display-name> MyHttpDownloadServlet</display-name > -->
+<!--              <servlet-name> MyHttpDownloadServlet</servlet-name > -->
+<!--              <servlet-class> com.drcall.client.web.MyHttpDownloadServlet</servlet-class > -->
+<!--        </servlet> -->
+<!--        <servlet-mapping> -->
+<!--              <servlet-name> MyHttpDownloadServlet</servlet-name > -->
+<!--              <url-pattern> /http</url-pattern > -->
+<!--        </servlet-mapping> -->
 	
 	<!-- Servlets -->
 	<servlet>

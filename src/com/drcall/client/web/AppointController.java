@@ -358,7 +358,8 @@ public class AppointController extends BaseController {
 		return mav;
 	}
 	
-
+	
+	// 確認並送出掛號
 	public ModelAndView submit(HttpServletRequest request, HttpServletResponse response, AppointCommand cmd){
 		Map<String, Object> model = new HashMap<String, Object>();
 
