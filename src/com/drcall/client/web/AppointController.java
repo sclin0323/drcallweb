@@ -47,6 +47,7 @@ import com.drcall.client.command.AppointCommand;
 import com.drcall.client.command.AutoCompletedCommand;
 import com.drcall.client.command.ScheduleCommand;
 import com.drcall.client.scheduling.MonitorSendEmailJob;
+import com.drcall.client.util.AppointUtil;
 import com.drcall.client.util.DrcallScheduleDay;
 import com.google.gson.Gson;
 
@@ -172,20 +173,11 @@ public class AppointController extends BaseController {
 		return mav;
 	}
 	
-	
-
 	// AJAX
 	public ModelAndView changeAppointment(HttpServletRequest request, HttpServletResponse response, AppointCommand cmd){
 		// Member
 		Principal principal = request.getUserPrincipal();
 		Member member= memberDAO.findById(principal.getName());	
-//		long appointId = cmd.getAppointId();
-//		long scheduleId = cmd.getScheduleId();
-//		int shift = cmd.getShift();
-//		
-//		log.info("appointId:"+appointId);
-//		log.info("scheduleId:"+scheduleId);
-//		log.info("shift:"+shift);
 		
 		// FIRST CANCEL
 		Appoint oldAppoint = appointDAO.findById(cmd.getAppointId());
@@ -373,7 +365,7 @@ public class AppointController extends BaseController {
 		Appoint appoint = new Appoint();
 		appoint.setMember(member);
 
-
+		String birth;
 		if("0".equals(select_patient)){
 			appoint.setName(member.getName());
 			appoint.setTel(member.getMemberId());
@@ -403,17 +395,22 @@ public class AppointController extends BaseController {
 		Schedule schedule = scheduleDAO.findById(scheduleId);
 		appoint.setSchedule(schedule);
 		
-		// TEST
-		Random ran = new Random();
-		int appNum = ran.nextInt(42)+1;
-		appoint.setAppNumber(appNum);
-
-		appointDAO.save(appoint);
-		
-		// WITHDRAW USER ACCOUNT 
-		Account account = new Account();
-		account.withdrawByWebAppoint(accountDAO, member);
-
+		// start to appoint via HIS
+		AppointUtil appointUtil = new AppointUtil(cmd.getIdNumber(),appoint, schedule);
+		String result = appointUtil.requestAppoint();
+		int appNum = -1;
+		try {
+			appNum = Integer.parseInt(result);
+			appoint.setAppNumber(appNum);
+			appointDAO.save(appoint);
+			
+			// WITHDRAW USER ACCOUNT 
+			Account account = new Account();
+			account.withdrawByWebAppoint(accountDAO, member);
+			
+		} catch(Exception e) {
+			System.out.println("appoint error input...");
+		} 
 
 		model.put("date", appoint.getSchedule().getDate());
 		model.put("hospitalName", appoint.getSchedule().getHospital().getName());

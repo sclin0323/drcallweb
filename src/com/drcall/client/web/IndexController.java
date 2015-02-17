@@ -33,6 +33,7 @@ import com.drcall.client.command.AutoCompletedCommand;
 import com.drcall.client.command.FreeExperienceCommand;
 import com.drcall.client.command.MessageCommand;
 import com.drcall.client.command.ScheduleCommand;
+import com.drcall.client.util.AppointUtil;
 import com.drcall.client.util.DrcallScheduleDay;
 import com.drcall.db.dao.Account;
 import com.drcall.db.dao.AccountDAO;
@@ -267,23 +268,28 @@ public class IndexController extends BaseController {
 		appoint.setSchedule(schedule);
 		appoint.setType(0); //0: web 1: app
 		
-		// TEST
-		Random ran = new Random();
-		int appNum = ran.nextInt(42)+1;
-		appoint.setAppNumber(appNum);
+		// start to appoint via HIS
+		AppointUtil appointUtil = new AppointUtil(cmd.getIdNumber(),appoint, schedule);
+		String result = appointUtil.requestAppoint();
+		int appNum = -1;
+		try {
+			appNum = Integer.parseInt(result);
+			appoint.setAppNumber(appNum);
+			appointDAO.save(appoint);
+			
+			// WITHDRAW USER ACCOUNT 
+			Account account = new Account();
+			account.withdrawByWebAppoint(accountDAO, member);
+			
+		} catch(Exception e) {
+			System.out.println("appoint error input...");
+		} 
 		
-		appointDAO.save(appoint);
 		
 		model.put("date", appoint.getSchedule().getDate());
 		model.put("doctorName", appoint.getSchedule().getDoctor().getName());
 		model.put("appoint", appoint);
 		model.put("appointNumber", appNum);
-		
-		
-		// WITHDRAW USER ACCOUNT 
-		Account account = new Account();
-		account.withdrawByWebAppoint(accountDAO, member);
-		
 		
 		ModelAndView mav = new ModelAndView("jsonView", model);
 		return mav;

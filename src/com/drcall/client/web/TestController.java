@@ -16,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.drcall.client.command.AppointCommand;
+import com.drcall.client.util.AppointUtil;
 import com.drcall.db.dao.Appoint;
 import com.drcall.db.dao.AppointDAO;
 import com.drcall.db.dao.FamilyDAO;
@@ -34,46 +35,19 @@ import javax.servlet.http.Part;
 
 public class TestController extends BaseController {
 	
-	private static final Log log = LogFactory.getLog(AppointController.class);
-	private static final String SAVE_DIR = "uploadFiles";
 
-	
-
-	public void UploadServlet(HttpServletRequest request, HttpServletResponse response) throws Exception, ServletException{
+	public void appoint(HttpServletRequest request, HttpServletResponse response) throws Exception, ServletException{
 		
-		 // gets absolute path of the web application
-        //String appPath = request.getServletContext().getRealPath("");
-        // constructs path of the directory to save uploaded file
-        String savePath = "D:\\temp" + File.separator + SAVE_DIR;
-         
-        // creates the save directory if it does not exists
-        File fileSaveDir = new File(savePath);
-        if (!fileSaveDir.exists()) {
-            fileSaveDir.mkdir();
-        }
-         
-        for (Part part : request.getParts()) {
-            String fileName = extractFileName(part);
-            part.write(savePath + File.separator + fileName);
-        }
- 
-        request.setAttribute("message", "Upload has been done successfully!");
-        getServletContext().getRequestDispatcher("/message.jsp").forward(
-                request, response);
+		System.out.println("========================================");
+		
+		AppointUtil appointUtil = new AppointUtil();
+
+		String result = appointUtil.requestAppoint();
+		
+		System.out.println(result);
 		
         return;
 	}
-	
-	private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length()-1);
-            }
-        }
-        return "";
-    }
 	
 
 }
